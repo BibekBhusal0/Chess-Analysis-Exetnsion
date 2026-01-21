@@ -1287,9 +1287,9 @@
       },
     ];
 
-    let attempts = 0;
-    const maxAttempts = STATE.isSlowDevice ? 10 : 5;
-    let delayMs = (STATE.isSlowDevice ? 600 : 400) * STATE.performanceFactor;
+    // let attempts = 0;
+    // const maxAttempts = STATE.isSlowDevice ? 10 : 5;
+    // let delayMs = (STATE.isSlowDevice ? 600 : 400) * STATE.performanceFactor;
 
     const findWintrChessElements = () => {
       for (const sel of selectorsConfig) {
@@ -1419,7 +1419,7 @@
   }
 
   // --- CHROME MESSAGE LISTENER ---
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     if (request.action === "extractPgnFromIconClick") {
       (async () => {
         try {

@@ -1,7 +1,7 @@
 const WINTRCHESS_URL = "https://wintrchess.com/";
 const PGN_STORAGE_KEY = "wintrChessPgnToPaste";
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.action === "fetchPgn") {
     fetch(request.url, {
       method: "GET",
@@ -9,15 +9,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         Accept: "application/json, application/x-chess-pgn, text/plain",
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
-          return response.json().then((json) => ({ type: "json", data: json }));
+          const json = await response.json();
+            return ({ type: "json", data: json });
         }
-        return response.text().then((text) => ({ type: "text", data: text }));
+        const text = await response.text();
+          return ({ type: "text", data: text });
       })
       .then((result) => {
         sendResponse({ success: true, ...result });

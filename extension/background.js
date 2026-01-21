@@ -37,6 +37,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     return true;
   }
 
+  if (request.action === "openCgr") {
+    chrome.tabs.create({ url: request.url });
+    sendResponse({ success: true });
+    return true;
+  }
+
   if (request.action === "storePgnAndOpenWintrChess") {
     if (request.pgn) {
       chrome.storage.local.set({ [PGN_STORAGE_KEY]: request.pgn }, () => {

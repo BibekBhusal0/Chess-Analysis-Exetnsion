@@ -192,7 +192,7 @@
     } else if (STATE.platform === "chess.com") {
       initializeSupportedPlatform("chess.com", getChessComPageInfo);
     } else if (STATE.platform === "wintrchess") {
-      initWintrChessAutoPaste();
+      // initWintrChessAutoPaste();
     }
   }
 
@@ -746,20 +746,10 @@
         try {
           const pgn = await onClickHandler();
           if (pgn) {
-            await chromeStorage.setValue(CONFIG.PGN_STORAGE_KEY, pgn);
-            
-            // Detect and store orientation
-            const orientation = getBoardOrientation(STATE.platform);
-            if (orientation === "black") {
-               await chromeStorage.setValue(CONFIG.ORIENTATION_STORAGE_KEY, "black");
-            } else {
-               // Ensure we don't carry over old state
-               await chromeStorage.deleteValue(CONFIG.ORIENTATION_STORAGE_KEY);
-            }
-
+            const cgrUrl = `https://bibekbhusal0.github.io/CGR/?pgn=${encodeURIComponent(pgn)}&analyze=true`;
             chrome.runtime.sendMessage({
-              action: "openWintrChess",
-              url: CONFIG.WINTRCHESS_URL,
+              action: "openCgr",
+              url: cgrUrl,
             });
           }
         } catch (error) {

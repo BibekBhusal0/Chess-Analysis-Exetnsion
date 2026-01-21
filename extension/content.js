@@ -746,7 +746,8 @@
         try {
           const pgn = await onClickHandler();
           if (pgn) {
-            const cgrUrl = `https://bibekbhusal0.github.io/CGR/?pgn=${encodeURIComponent(pgn)}&analyze=true`;
+            const orientation = getBoardOrientation(STATE.platform);
+            const cgrUrl = `https://bibekbhusal0.github.io/CGR/?pgn=${encodeURIComponent(pgn)}&orientation=${orientation}&analyze=true`;
             chrome.runtime.sendMessage({
               action: "openCgr",
               url: cgrUrl,
